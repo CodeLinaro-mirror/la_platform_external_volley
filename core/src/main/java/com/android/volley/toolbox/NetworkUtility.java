@@ -43,12 +43,14 @@ import java.util.List;
  * BasicAsyncNetwork}
  */
 final class NetworkUtility {
+    private static final int SLOW_REQUEST_THRESHOLD_MS = 3000;
+
     private NetworkUtility() {}
 
-    /** Logs a summary about the request when debug logging is enabled. */
-    static void logRequestSummary(
+    /** Logs requests that took over SLOW_REQUEST_THRESHOLD_MS to complete. */
+    static void logSlowRequests(
             long requestLifetime, Request<?> request, byte[] responseContents, int statusCode) {
-        if (VolleyLog.DEBUG) {
+        if (VolleyLog.DEBUG || requestLifetime > SLOW_REQUEST_THRESHOLD_MS) {
             VolleyLog.d(
                     "HTTP response for request=<%s> [lifetime=%d], [size=%s], "
                             + "[rc=%d], [retryCount=%s]",

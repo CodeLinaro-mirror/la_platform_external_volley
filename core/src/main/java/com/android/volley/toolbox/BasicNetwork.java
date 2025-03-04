@@ -124,9 +124,9 @@ public class BasicNetwork implements Network {
                     responseContents = new byte[0];
                 }
 
-                // log request when debugging is enabled.
+                // if the request is slow, log it.
                 long requestLifetime = SystemClock.elapsedRealtime() - requestStart;
-                NetworkUtility.logRequestSummary(
+                NetworkUtility.logSlowRequests(
                         requestLifetime, request, responseContents, statusCode);
 
                 if (statusCode < 200 || statusCode > 299) {
